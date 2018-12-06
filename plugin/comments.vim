@@ -243,7 +243,7 @@ function! RangeCommentLine()
   " for .cpp or .hpp or .java or .js or arduino (*.ino or *.pde) files use //
   if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$'
 
-    execute ":silent! normal :s/\\S/\\/\\/\\0/\<CR>:nohlsearch<CR>=="
+    execute ":silent! normal :s/\\S/\\/\\/\\0/\<CR>=="
   " for .c or .h or .pc or .css files use /* */
   elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
     " if there are previous comments on this line ie /* ... */
@@ -311,7 +311,7 @@ function! RangeUnCommentLine()
 
   " for .cpp or .hpp or .java or .js or arduino (*.ino or *.pde) or go files use //
   if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$'
-    execute ":silent! normal :s/\\/\\///\<CR>:nohlsearch\<CR>=="
+    execute ":silent! normal :s/\\/\\///\<CR>=="
   " for .c or .h or .pc or .css  or go files use /* */
   elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
