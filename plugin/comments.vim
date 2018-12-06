@@ -1,13 +1,13 @@
 " *********************************************************************************************
-" comments.vim  
+" comments.vim
 " *********************************************************************************************
-" Description : Global Plugin to comment and un-comment different 
+" Description : Global Plugin to comment and un-comment different
 "               source files in both normal and visual <Shift-V> mode
 " Last Change : 26th April, 2006
 " Created By  : Jasmeet Singh Anand <jasanand@hotmail.com>
 " Version     : 2.2
 " Usage       : For VIM 6 -
-"               Stick this file in your ~/.vim/plugin directory or 
+"               Stick this file in your ~/.vim/plugin directory or
 "               in some other 'plugin' directory that is in your runtime path
 "               For VIM 5 -
 "               Stick this file somewhere and 'source <path>/comments.vim' it from
@@ -20,24 +20,24 @@
 " *********************************************************************************************
  "Modification:
 " *********************************************************************************************
-" Sudar Muthu (http://sudarmuthu.com) 28th November, 2012 
+" Sudar Muthu (http://sudarmuthu.com) 28th November, 2012
 " Added support for Matlab and Octave (*.m) files
 " *********************************************************************************************
 " *********************************************************************************************
-" Sudar Muthu (http://sudarmuthu.com) 31th December, 2012 
+" Sudar Muthu (http://sudarmuthu.com) 31th December, 2012
 " Added support for pig files
 " *********************************************************************************************
 " *********************************************************************************************
-" Sudar Muthu (http://sudarmuthu.com) 14th May, 2012 
+" Sudar Muthu (http://sudarmuthu.com) 14th May, 2012
 " Added support for Arduino files
 " *********************************************************************************************
-" Jasmeet Anand  26th April, 2006 v2.0 
+" Jasmeet Anand  26th April, 2006 v2.0
 " Fixed C commenting where a single line already had previous comments.
 " int x=0; /*this is an x value*/
 " Still working on situations like
 " Issue A:
 " 1 int x=0; /*this
-" 2           is 
+" 2           is
 " 3           an
 " 4           x
 " 5           value*/
@@ -48,14 +48,14 @@
 " Jasmeet Anand  27th April, 2006 v2.2
 " Fixed another minor C code commenting bug
 " Provided for .csh, .php, .php2 and .php3 support
-" Resolved Issue A with the following logic 
+" Resolved Issue A with the following logic
 " 1 /* int x=0; */ /*this*/
-" 2           /*is*/ 
+" 2           /*is*/
 " 3           /*an*/
 " 4           /*x*/
 " 5           /*value*/
 " However care should be taken when un-commenting it
-" in order to retain the previous comments  
+" in order to retain the previous comments
 " *********************************************************************************************
 " Jasmeet Anand  1st May 2006 v2.3
 " Provided [:blank:] to accomodate for space and tab characters
@@ -125,7 +125,7 @@ function! CommentLine()
   let file_name = buffer_name("%")
 
   " for .cpp or .hpp or .java or .js or arduino (*.ino or *.pde) or go files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$' 
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$'
     execute ":silent! normal ^i//\<ESC>==\<down>^"
   " for .c or .h or .pc or .css files use /* */
   elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
@@ -148,7 +148,7 @@ function! CommentLine()
       execute ":silent! normal ^i(*\<ESC>$a*)\<ESC>==\<down>^"
     endif
     " .html,.xml,.xthml,.htm
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
     if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
     elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
         "  open, but a close "
@@ -170,19 +170,19 @@ function! CommentLine()
   " for .tex and .m (Matlab and Octave) files use %
   elseif file_name =~ '\.tex$' || file_name =~ '\.nw$' || file_name =~ '\.m$'
     execute ":silent! normal ^i%\<ESC>\<down>^"
-  " for fortran 77 files use C on first column 
+  " for fortran 77 files use C on first column
   elseif file_name =~ '\.f$' || file_name =~ '\.F$'
     execute ":silent! normal ^gIC\<ESC>\<down>^"
   " for fortran 90/95 files use !
   elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
     execute ":silent! normal ^i!\<ESC>\<down>^"
-  " for VHDL and Haskell files use -- 
+  " for VHDL and Haskell files use --
   elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
     execute ":silent! normal ^gI-- \<ESC>\<down>^"
   " for .clj or .cljs files use ;
   elseif file_name =~ '\.clj$' || file_name =~ '\.cljs$'
     execute ":silent! normal ^i;; \<ESC>\<down>"
-  " for all other files use # 
+  " for all other files use #
   else
     execute ":silent! normal ^i#\<ESC>\<down>^"
   endif
@@ -193,7 +193,7 @@ function! UnCommentLine()
   let file_name = buffer_name("%")
 
   " for .cpp or .hpp or .java or .js or arduino (*.ino or *.pde) files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$' 
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\/\\///\<CR>:nohlsearch\<CR>=="
   " for .ml or .mli
   elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
@@ -212,13 +212,13 @@ function! UnCommentLine()
   elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
   " for .xml .html .xhtml .htm use <!-- -->
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
     execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
     execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
   " for .tex and .m (Matlab and Octave) files use %
   elseif file_name =~ '\.tex$' || file_name =~ '\.nw$' || file_name =~ '\.m$'
     execute ":silent! normal :nohlsearch\<CR>:s/%/\<CR>:nohlsearch\<CR>"
-  " for fortran 77 files use C on first column 
+  " for fortran 77 files use C on first column
   elseif file_name =~ '\.f$' || file_name =~ '\.F$'
     execute ":silent! normal ^x\<ESC>\<down>^"
   " for fortran 90/95 files use !
@@ -230,7 +230,7 @@ function! UnCommentLine()
   " for .clj or .cljs
   elseif file_name =~ '\.clj$' || file_name =~ '\.cljs$'
       execute ":silent! normal :nohlsearch\<CR>:s/;; //\<CR>:nohlsearch\<CR>=="
-  " for all other files use # 
+  " for all other files use #
   else
     execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
   endif
@@ -241,11 +241,11 @@ function! RangeCommentLine()
   let file_name = buffer_name("%")
 
   " for .cpp or .hpp or .java or .js or arduino (*.ino or *.pde) files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$' 
-  
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$'
+
     execute ":silent! normal :s/\\S/\\/\\/\\0/\<CR>:nohlsearch<CR>=="
   " for .c or .h or .pc or .css files use /* */
-  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' 
+  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
     " if there are previous comments on this line ie /* ... */
     if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
       execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
@@ -260,7 +260,7 @@ function! RangeCommentLine()
       execute ":silent! normal :s/\\(\\S.*$\\)/\\/\\*\\1\\*\\//\<CR>:nohlsearch\<CR>=="
     endif
   " .html,.xml,.xthml,.htm
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
     if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
     elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
         "  open, but a close "
@@ -287,7 +287,7 @@ function! RangeCommentLine()
   " for .tex and .m (Matlab and Octave) files use %
   elseif file_name =~ '\.tex$' || file_name =~ '\.nw$' || file_name =~ '\.m$'
     execute ":silent! normal :s/\\S/\\%\\0/\<CR>:nohlsearch<CR>"
-  " for fortran 77 files use C on first column 
+  " for fortran 77 files use C on first column
   elseif file_name =~ '\.f$' || file_name =~ '\.F$'
     execute ":silent! normal ^gIC\<ESC>\<down>^"
   " for fortran 90/95 files use !
@@ -299,7 +299,7 @@ function! RangeCommentLine()
   " for .clj and .cljs files use ;
   elseif file_name =~ '\.clj$' || file_name =~ '\cljs.$'
     execute ":silent! normal ^gI;; \<ESC>\<down>^"
-  " for all other files use #  
+  " for all other files use #
   else
     execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
   endif
@@ -310,12 +310,12 @@ function! RangeUnCommentLine()
   let file_name = buffer_name("%")
 
   " for .cpp or .hpp or .java or .js or arduino (*.ino or *.pde) or go files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$' 
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$' || file_name =~ '\.ino$' || file_name =~ '\.pde$' || file_name =~ '\.go$' || file_name =~ '\.js$'
     execute ":silent! normal :s/\\/\\///\<CR>:nohlsearch\<CR>=="
   " for .c or .h or .pc or .css  or go files use /* */
-  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' 
+  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
-  " for .vim files use " 
+  " for .vim files use "
   elseif file_name =~ '\.vim$' || file_name =~ '\.vimrc$'
     execute ":silent! normal :s/\\\"//\<CR>:nohlsearch\<CR>"
   " for .sql or .pig files use --
@@ -326,7 +326,7 @@ function! RangeUnCommentLine()
     execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>=="
     execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>=="
   " for .xml .html .xhtml .htm use <!-- -->
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'
     execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
     execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
   elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
@@ -334,7 +334,7 @@ function! RangeUnCommentLine()
   " for .tex and .m (Matlab and Octave) files use %
   elseif file_name =~ '\.tex$' || file_name =~ '\.nw$' || file_name =~ '\.m$'
     execute ":silent! normal :s/%/\<CR>:nohlsearch\<CR>"
-  " for fortran 77 files use C on first column 
+  " for fortran 77 files use C on first column
   elseif file_name =~ '\.f$' || file_name =~ '\.F$'
     execute ":silent! normal ^x\<ESC>\<down>^"
   " for fortran 90/95 files use !
@@ -346,7 +346,7 @@ function! RangeUnCommentLine()
   " for .clj and .cljs files use ;
   elseif file_name =~ '\.clj$' || file_name =~ '\.cljs$'
     execute ":silent! normal :s/;; //\<CR>:nohlsearch\<CR>"
-  " for all other files use # 
+  " for all other files use #
   else
     execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
   endif
